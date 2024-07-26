@@ -1,4 +1,5 @@
 import { PrismaAdapter } from "@lucia-auth/adapter-prisma";
+import { Google } from "arctic";
 import { Lucia, Session, User } from "lucia";
 import { cookies } from "next/headers";
 import { cache } from "react";
@@ -13,7 +14,7 @@ export const lucia = new Lucia(adapter, {
       secure: process.env.NODE_ENV === "production",
     },
   },
-  getUserAttributes: (databaseUserAttributes) => {
+  getUserAttributes(databaseUserAttributes) {
     return {
       id: databaseUserAttributes.id,
       username: databaseUserAttributes.username,
@@ -24,6 +25,13 @@ export const lucia = new Lucia(adapter, {
   },
 });
 
+declare module "lucia" {
+  interface Register {
+    Lucia: typeof lucia;
+    DatabaseUserAttributes: DatabaseUserAttributes;
+  }
+}
+
 interface DatabaseUserAttributes {
   id: string;
   username: string;
@@ -32,31 +40,29 @@ interface DatabaseUserAttributes {
   googleId: string | null;
 }
 
-declare module "lucia" {
-  interface Register {
-    Lucia: typeof lucia;
-    DatabaseUserAttributes: DatabaseUserAttributes;
-  }
-}
+export const google = new Google(
+  process.env.GOOGLE_CLIENT_ID!,
+  process.env.GOOGLE_CLIENT_SECRET!,
+  `${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/callback/google`,
+);
 
 export const validateRequest = cache(
   async (): Promise<
-    | {
-        user: User;
-        session: Session;
-      }
-    | { user: null; session: null }
+    { user: User; session: Session } | { user: null; session: null }
   > => {
     const sessionId = cookies().get(lucia.sessionCookieName)?.value ?? null;
 
     if (!sessionId) {
-      return { user: null, session: null };
+      return {
+        user: null,
+        session: null,
+      };
     }
 
     const result = await lucia.validateSession(sessionId);
 
     try {
-      if (result.session && result.user) {
+      if (result.session && result.session.fresh) {
         const sessionCookie = lucia.createSessionCookie(result.session.id);
         cookies().set(
           sessionCookie.name,
@@ -64,7 +70,6 @@ export const validateRequest = cache(
           sessionCookie.attributes,
         );
       }
-
       if (!result.session) {
         const sessionCookie = lucia.createBlankSessionCookie();
         cookies().set(
@@ -73,7 +78,7 @@ export const validateRequest = cache(
           sessionCookie.attributes,
         );
       }
-    } catch (error) {}
+    } catch {}
 
     return result;
   },
