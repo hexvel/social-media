@@ -5,7 +5,6 @@ import { formatNumber } from "@/lib/utils";
 import { Loader2 } from "lucide-react";
 import { unstable_cache } from "next/cache";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { Suspense } from "react";
 import FollowButton from "./follow-button";
 import UserAvatar from "./user-avatar";
@@ -104,7 +103,6 @@ const getTrendingTopics = unstable_cache(
 
 async function TrendingTopics() {
   const trendingTopics = await getTrendingTopics();
-  const router = useRouter();
 
   return (
     <div className="mt-5 space-y-5 rounded-2xl bg-card p-5 shadow-sm">
@@ -113,13 +111,7 @@ async function TrendingTopics() {
         const title = hashtag.split("#")[1];
 
         return (
-          <div
-            key={title}
-            className="block"
-            onClick={() =>
-              router.push(`/search?q=${encodeURIComponent(hashtag)}`)
-            }
-          >
+          <Link key={title} className="block" href={`/hashtag/${title}`}>
             <p
               className="line-clamp-1 break-all font-semibold hover:underline"
               title={hashtag}
@@ -129,7 +121,7 @@ async function TrendingTopics() {
             <p className="text-sm text-muted-foreground">
               {formatNumber(count)} {count === 1 ? "post" : "posts"}
             </p>
-          </div>
+          </Link>
         );
       })}
     </div>
