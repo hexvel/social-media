@@ -26,20 +26,6 @@ export async function GET(req: NextRequest) {
               search: searchQuery,
             },
           },
-          {
-            user: {
-              displayName: {
-                search: searchQuery,
-              },
-            },
-          },
-          {
-            user: {
-              username: {
-                search: searchQuery,
-              },
-            },
-          },
         ],
       },
       include: getPostDataInclude(user.id),
