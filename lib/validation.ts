@@ -32,6 +32,7 @@ export const createPostSchema = z.object({
     .trim()
     .min(1, "Content is required")
     .max(1000, "Content must be at most 1000 characters long"),
+  mediaIds: z.array(z.string()).max(5, "Max 5 media per post"),
 });
 
 export const updateUserProfileSchema = z.object({
