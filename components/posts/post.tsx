@@ -11,6 +11,7 @@ import PostsMoreButton from "../posts-more-button";
 import { useSession } from "../providers/session-provider";
 import UserAvatar from "../user-avatar";
 import UserTooltip from "../user-tooltip";
+import LikeButton from "./like-button";
 
 interface PostsProps {
   post: PostData;
@@ -59,6 +60,14 @@ export default function Post({ post }: PostsProps) {
       {!!post.attachments.length && (
         <MediaPreviews attachments={post.attachments} />
       )}
+      <hr className="text-muted-foreground" />
+      <LikeButton
+        postId={post.id}
+        initialState={{
+          likes: post._count.likes,
+          isLikedByUser: !!post.likes.some((like) => like.userId === user.id),
+        }}
+      />
     </article>
   );
 }
