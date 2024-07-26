@@ -2,7 +2,6 @@ import { validateRequest } from "@/auth";
 import FollowButton from "@/components/follow-button";
 import FollowerCount from "@/components/follower-count";
 import TrendSiderbar from "@/components/trends-sidebar";
-import { Button } from "@/components/ui/button";
 import UserAvatar from "@/components/user-avatar";
 import prisma from "@/lib/prisma";
 import { FollowerInfo, getUserDataSelect, UserData } from "@/lib/types";
@@ -11,6 +10,7 @@ import { formatDate } from "date-fns";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { cache } from "react";
+import EditProfileButton from "./_components/edit-profile-button";
 import UserPosts from "./_components/user-posts";
 
 interface UserPageProps {
@@ -115,7 +115,7 @@ async function UserProfile({ user, loggedInUser }: UserProfileProps) {
           </div>
         </div>
         {user.id === loggedInUser ? (
-          <Button>Edit profile</Button>
+          <EditProfileButton user={user} />
         ) : (
           <FollowButton userId={user.id} initialState={followerInfo} />
         )}

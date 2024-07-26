@@ -33,3 +33,10 @@ export const createPostSchema = z.object({
     .min(1, "Content is required")
     .max(1000, "Content must be at most 1000 characters long"),
 });
+
+export const updateUserProfileSchema = z.object({
+  displayName: z.string().trim().min(1, "Display name is required"),
+  bio: z.string().trim().max(200, "Bio must be at most 200 characters long"),
+});
+
+export type UpdateUserProfileValues = z.infer<typeof updateUserProfileSchema>;
