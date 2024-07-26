@@ -8,7 +8,7 @@ export async function GET(req: NextRequest) {
     const q = req.nextUrl.searchParams.get("q") || "";
     const cursor = req.nextUrl.searchParams.get("cursor") || undefined;
 
-    const searchQuery = q.split(" ").join(" & ");
+    const searchQuery = q.toLowerCase().split(" ").join(" & ");
 
     const pageSize = 10;
 
