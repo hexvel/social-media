@@ -63,7 +63,7 @@ export async function GET(req: NextRequest) {
 
     const userId = generateIdFromEntropySize(10);
 
-    const username = slugify(googleUser.name) + "-" + userId.slice(0, 4);
+    const username = slugify(googleUser.name);
 
     await prisma.$transaction(async (tx) => {
       await tx.user.create({
