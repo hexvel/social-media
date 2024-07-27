@@ -184,7 +184,7 @@ function FullScreenImage({ url, onClose }: FullScreenImageProps) {
       onClick={handleClose}
     >
       <div
-        className={`relative flex h-full max-h-screen w-full max-w-screen-lg transform items-center justify-center transition-transform duration-500 ease-in-out ${
+        className={`relative flex h-full max-h-screen w-full max-w-screen-lg transform items-center justify-center transition-transform duration-300 ease-in-out ${
           loaded && !closing ? "scale-100" : "scale-0"
         }`}
       >
