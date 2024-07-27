@@ -143,7 +143,7 @@ function MediaPreview({ media, onClick }: MediaPreviewProps) {
         alt="Attachment"
         width={500}
         height={500}
-        className="mx-auto size-fit max-h-[30rem] cursor-pointer rounded-2xl"
+        className="mx-auto size-fit max-h-[30rem] cursor-pointer select-none rounded-2xl"
         onClick={() => onClick(media.url)}
       />
     );
@@ -184,7 +184,7 @@ function FullScreenImage({ url, onClose }: FullScreenImageProps) {
       onClick={handleClose}
     >
       <div
-        className={`relative flex h-full max-h-screen w-full max-w-screen-lg transform items-center justify-center transition-transform duration-300 ease-in-out ${
+        className={`pointer-events-none relative flex h-full max-h-screen w-full max-w-screen-lg transform select-none items-center justify-center transition-transform duration-300 ease-in-out ${
           loaded && !closing ? "scale-100" : "scale-0"
         }`}
       >
