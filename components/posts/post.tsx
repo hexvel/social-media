@@ -6,7 +6,7 @@ import Link from "next/link";
 import Linkify from "../linkify";
 
 import { Media } from "@prisma/client";
-import { MessageSquare } from "lucide-react";
+import { MessageSquare, X } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
 import Comments from "../comments/comment-items";
@@ -24,6 +24,7 @@ interface PostsProps {
 export default function Post({ post }: PostsProps) {
   const { user } = useSession();
   const [showComments, setShowComments] = useState(false);
+  const [fullScreenImage, setFullScreenImage] = useState<string | null>(null);
 
   return (
     <article className="group/post space-y-3 rounded-2xl bg-card p-5 shadow-sm">
@@ -63,7 +64,10 @@ export default function Post({ post }: PostsProps) {
         <div className="whitespace-pre-line break-words">{post.content}</div>
       </Linkify>
       {!!post.attachments.length && (
-        <MediaPreviews attachments={post.attachments} />
+        <MediaPreviews
+          attachments={post.attachments}
+          onImageClick={(url) => setFullScreenImage(url)}
+        />
       )}
       <hr className="text-muted-foreground" />
       <div className="flex justify-between gap-5">
@@ -92,15 +96,22 @@ export default function Post({ post }: PostsProps) {
         />
       </div>
       {showComments && <Comments post={post} />}
+      {fullScreenImage && (
+        <FullScreenImage
+          url={fullScreenImage}
+          onClose={() => setFullScreenImage(null)}
+        />
+      )}
     </article>
   );
 }
 
 interface MediaPreviewsProps {
   attachments: Media[];
+  onImageClick: (url: string) => void;
 }
 
-function MediaPreviews({ attachments }: MediaPreviewsProps) {
+function MediaPreviews({ attachments, onImageClick }: MediaPreviewsProps) {
   return (
     <div
       className={cn(
@@ -109,7 +120,11 @@ function MediaPreviews({ attachments }: MediaPreviewsProps) {
       )}
     >
       {attachments.map((attachment) => (
-        <MediaPreview key={attachment.id} media={attachment} />
+        <MediaPreview
+          key={attachment.id}
+          media={attachment}
+          onClick={onImageClick}
+        />
       ))}
     </div>
   );
@@ -117,9 +132,10 @@ function MediaPreviews({ attachments }: MediaPreviewsProps) {
 
 interface MediaPreviewProps {
   media: Media;
+  onClick: (url: string) => void;
 }
 
-function MediaPreview({ media }: MediaPreviewProps) {
+function MediaPreview({ media, onClick }: MediaPreviewProps) {
   if (media.type === "IMAGE") {
     return (
       <Image
@@ -127,7 +143,8 @@ function MediaPreview({ media }: MediaPreviewProps) {
         alt="Attachment"
         width={500}
         height={500}
-        className="mx-auto size-fit max-h-[30rem] rounded-2xl"
+        className="mx-auto size-fit max-h-[30rem] cursor-pointer rounded-2xl"
+        onClick={() => onClick(media.url)}
       />
     );
   }
@@ -145,6 +162,33 @@ function MediaPreview({ media }: MediaPreviewProps) {
   return <p className="text-destructive">Unsupported attachment</p>;
 }
 
+interface FullScreenImageProps {
+  url: string;
+  onClose: () => void;
+}
+
+function FullScreenImage({ url, onClose }: FullScreenImageProps) {
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-75">
+      <div className="relative">
+        <Image
+          src={url}
+          width={500}
+          height={500}
+          alt="Full Screen"
+          className="rounded-2xl object-cover"
+        />
+        <button
+          onClick={onClose}
+          className="absolute right-4 top-4 rounded-full bg-black bg-opacity-50 p-2 text-white"
+        >
+          <X className="size-5" />
+        </button>
+      </div>
+    </div>
+  );
+}
+
 interface CommentButtonProps {
   post: PostData;
   onClick: () => void;
@@ -152,7 +196,7 @@ interface CommentButtonProps {
 
 function CommentButton({ post, onClick }: CommentButtonProps) {
   return (
-    <button className="flex items-center gap-2" onClick={onClick}>
+    <button onClick={onClick} className="flex items-center gap-2">
       <MessageSquare className="size-5" />
       <span className="text-sm font-medium tabular-nums">
         {post._count.comments}{" "}
