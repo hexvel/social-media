@@ -71,6 +71,8 @@ export default function PostEditor() {
   };
 
   const onPaste = (e: ClipboardEvent<HTMLInputElement>) => {
+    if (!e.clipboardData.items[0].type.startsWith("image/")) return;
+
     const files = Array.from(e.clipboardData.items)
       .filter((item) => item.kind === "file")
       .map((item) => item.getAsFile()) as File[];
