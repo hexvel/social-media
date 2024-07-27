@@ -31,7 +31,7 @@ export default function Post({ post }: PostsProps) {
       <div className="flex justify-between gap-3">
         <div className="flex flex-wrap gap-3">
           <UserTooltip user={post.user}>
-            <Link href={`/users/${post.user.username}`}>
+            <Link className="select-none" href={`/users/${post.user.username}`}>
               <UserAvatar avatarUrl={post.user.avatarUrl} />
             </Link>
           </UserTooltip>

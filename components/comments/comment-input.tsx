@@ -2,7 +2,7 @@ import { PostData } from "@/lib/types";
 import { Loader2, SendHorizonal } from "lucide-react";
 import { useState } from "react";
 import { Button } from "../ui/button";
-import { Textarea } from "../ui/textarea";
+import { Input } from "../ui/input";
 import { useSubmitCommentMutation } from "./mutations";
 
 interface CommentInputProps {
@@ -32,7 +32,7 @@ export default function CommentInput({ post }: CommentInputProps) {
 
   return (
     <form className="flex w-full items-center gap-2" onSubmit={onSubmit}>
-      <Textarea
+      <Input
         placeholder="Write a comment..."
         value={input}
         className="resize-none overflow-hidden"
