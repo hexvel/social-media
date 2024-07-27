@@ -168,24 +168,39 @@ interface FullScreenImageProps {
 }
 
 function FullScreenImage({ url, onClose }: FullScreenImageProps) {
+  const [loaded, setLoaded] = useState(false);
+  const [closing, setClosing] = useState(false);
+
+  const handleClose = () => {
+    setClosing(true);
+    setTimeout(onClose, 500);
+  };
+
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-75"
-      onClick={onClose}
+      className={`fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-75 transition-opacity duration-500 ${
+        loaded && !closing ? "opacity-100" : "opacity-0"
+      }`}
+      onClick={handleClose}
     >
-      <div className="relative">
+      <div
+        className={`relative flex h-full max-h-screen w-full max-w-screen-lg transform items-center justify-center transition-transform duration-500 ease-in-out ${
+          loaded && !closing ? "scale-100" : "scale-0"
+        }`}
+      >
         <Image
           src={url}
+          alt="Full Screen"
           width={500}
           height={500}
-          alt="Full Screen"
           className="rounded-2xl object-cover"
+          onLoadingComplete={() => setLoaded(true)}
         />
         <button
-          onClick={onClose}
+          onClick={handleClose}
           className="absolute right-4 top-4 rounded-full bg-black bg-opacity-50 p-2 text-white"
         >
-          <X className="size-5" />
+          <X />
         </button>
       </div>
     </div>
