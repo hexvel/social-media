@@ -21,8 +21,8 @@ const geistMono = localFont({
 
 export const metadata: Metadata = {
   title: {
-    template: "%s | HexBook",
-    default: "HexBook",
+    template: "%s | HEXBook",
+    default: "HEXBOOK",
   },
   description: "The official HexBook social media platform.",
 };
