@@ -5,17 +5,20 @@ import { formatNumber } from "@/lib/utils";
 import { Loader2 } from "lucide-react";
 import { unstable_cache } from "next/cache";
 import Link from "next/link";
-import { Suspense } from "react";
+import { Suspense, useCallback } from "react";
 import FollowButton from "./follow-button";
 import UserAvatar from "./user-avatar";
 import UserTooltip from "./user-tooltip";
 
 export default function TrendSiderbar() {
+  const renderWhoToFollow = useCallback(() => <WhoToFollow />, []);
+  const renderTrendingTopics = useCallback(() => <TrendingTopics />, []);
+
   return (
     <div className="sticky top-[5.25rem] hidden h-fit w-72 flex-none md:block lg:w-80">
       <Suspense fallback={<Loader2 className="mx-auto animate-spin" />}>
-        <WhoToFollow />
-        <TrendingTopics />
+        {renderWhoToFollow()}
+        {renderTrendingTopics()}
       </Suspense>
     </div>
   );
