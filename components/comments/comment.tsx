@@ -2,6 +2,7 @@ import { useSession } from "@/components/providers/session-provider";
 import { CommentData } from "@/lib/types";
 import { formatRelativeDate } from "@/lib/utils";
 import Link from "next/link";
+import Linkify from "../linkify";
 import UserAvatar from "../user-avatar";
 import UserTooltip from "../user-tooltip";
 import CommentMoreButton from "./more-button";
@@ -36,7 +37,9 @@ export default function Comment({ comment }: CommentProps) {
             {formatRelativeDate(comment.createdAt)}
           </span>
         </div>
-        <div>{comment.content}</div>
+        <div>
+          <Linkify>{comment.content}</Linkify>
+        </div>
       </div>
       {comment.user.id === user.id && (
         <CommentMoreButton
