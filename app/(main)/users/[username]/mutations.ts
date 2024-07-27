@@ -61,7 +61,6 @@ export function useUpdateProfileMutation() {
                     },
                   };
                 }
-                console.log(post);
                 return post;
               }),
             })),
@@ -69,7 +68,7 @@ export function useUpdateProfileMutation() {
         },
       );
 
-      router.refresh();
+      router.push(`/users/${updatedUser.username}`);
 
       toast({
         description: "Profile updated",
@@ -79,7 +78,8 @@ export function useUpdateProfileMutation() {
       console.error(error);
       toast({
         variant: "destructive",
-        description: "Failed to update profile. Please try again.",
+        description:
+          "Failed to update profile. Perhaps this username is already occupied.",
       });
     },
   });

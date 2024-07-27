@@ -47,6 +47,7 @@ export function EditProfileDialoag({
     resolver: zodResolver(updateUserProfileSchema),
     defaultValues: {
       displayName: user.displayName,
+      username: user.username,
       bio: user.bio || "",
     },
   });
@@ -101,6 +102,19 @@ export function EditProfileDialoag({
                   <FormLabel>Display name</FormLabel>
                   <FormControl>
                     <Input placeholder="Your display name" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="username"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Username</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Your username" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
