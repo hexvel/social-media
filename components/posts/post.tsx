@@ -3,7 +3,7 @@
 import { PostData } from "@/lib/types";
 import { cn, formatRelativeDate } from "@/lib/utils";
 import Link from "next/link";
-import Linkify from "../linkify";
+import { LinkifyWithPreview } from "../linkify";
 
 import { Media } from "@prisma/client";
 import { MessageSquare } from "lucide-react";
@@ -61,9 +61,9 @@ export default function Post({ post }: PostsProps) {
           />
         )}
       </div>
-      <Linkify>
+      <LinkifyWithPreview>
         <div className="whitespace-pre-line break-words">{post.content}</div>
-      </Linkify>
+      </LinkifyWithPreview>
       {!!post.attachments.length && (
         <MediaPreviews
           attachments={post.attachments}

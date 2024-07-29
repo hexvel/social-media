@@ -20,16 +20,24 @@ export default function Linkify({ children }: LinkifyProps) {
   );
 }
 
-function LinkifyUrl({ children }: LinkifyProps) {
+export function LinkifyWithPreview({ children }: LinkifyProps) {
   const renderLinkPreview = useCallback(
     () => <LinkPreview>{children}</LinkPreview>,
     [children],
   );
 
   return (
-    <LinkItUrl className="text-primary hover:underline">
-      {renderLinkPreview()}
-    </LinkItUrl>
+    <LinkifyUsername>
+      <LinkifyHashtag>
+        <LinkifyUrl>{renderLinkPreview()}</LinkifyUrl>
+      </LinkifyHashtag>
+    </LinkifyUsername>
+  );
+}
+
+function LinkifyUrl({ children }: LinkifyProps) {
+  return (
+    <LinkItUrl className="text-primary hover:underline">{children}</LinkItUrl>
   );
 }
 
