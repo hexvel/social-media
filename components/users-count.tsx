@@ -11,8 +11,6 @@ const UsersCount = () => {
     queryFn: () => kyInstance.get("/api/users/count").json<number>(),
   });
 
-  console.log(usersCount);
-
   return (
     <>
       {!usersCount ? (
