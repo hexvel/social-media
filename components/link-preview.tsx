@@ -1,4 +1,4 @@
-import kyInstance from "@/lib/ky";
+import { useLinkPreview } from "@/hooks/use-link-preview";
 import { Loader2 } from "lucide-react";
 import Link from "next/link";
 import { ReactNode, useEffect, useRef, useState } from "react";
@@ -12,9 +12,9 @@ interface PreviewData {
 
 const LinkPreview = ({ children }: { children: ReactNode }) => {
   const [url, setUrl] = useState("");
-  const [preview, setPreview] = useState<PreviewData | null>(null);
-  const [loading, setLoading] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
+
+  const { data: preview, isLoading } = useLinkPreview(url);
 
   useEffect(() => {
     const extractUrl = () => {
@@ -30,30 +30,10 @@ const LinkPreview = ({ children }: { children: ReactNode }) => {
     extractUrl();
   }, [children]);
 
-  useEffect(() => {
-    if (url) {
-      const fetchPreview = async () => {
-        try {
-          setLoading(true);
-          const data = await kyInstance
-            .get(`/api/link-preview?url=${encodeURIComponent(url)}`)
-            .json<PreviewData>();
-          setPreview(data);
-        } catch (error) {
-          setPreview(null);
-        } finally {
-          setLoading(false);
-        }
-      };
-
-      fetchPreview();
-    }
-  }, [url]);
-
   return (
     <div ref={containerRef}>
       {children}
-      {loading && <Loader2 className="mx-auto my-3 animate-spin" />}
+      {!url || (isLoading && <Loader2 className="mx-auto my-3 animate-spin" />)}
       {preview && (
         <Link
           href={preview.url}
