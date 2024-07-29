@@ -15,10 +15,13 @@ const UsersCount = () => {
 
   return (
     <>
-      {!usersCount && <Loader2 className="mx-auto my-3 animate-spin" />}
-      <span className="font-semibold">
-        {formatNumber(usersCount!)} {usersCount === 1 ? "user" : "users"}
-      </span>
+      {!usersCount ? (
+        <Loader2 className="mx-auto my-3 animate-spin" />
+      ) : (
+        <span className="font-semibold">
+          {formatNumber(usersCount!)} {usersCount === 1 ? "user" : "users"}
+        </span>
+      )}
     </>
   );
 };
