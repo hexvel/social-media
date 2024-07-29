@@ -28,10 +28,13 @@
     "@tiptap/starter-kit": "^2.5.6",
     "@uploadthing/react": "^6.7.2",
     "arctic": "^1.9.2",
+    "cheerio": "^1.0.0-rc.12",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "date-fns": "^3.6.0",
+    "jsdom": "^24.1.1",
     "ky": "^1.4.0",
+    "link-preview-js": "^3.0.5",
     "lucia": "^3.2.0",
     "lucide-react": "^0.414.0",
     "next": "15.0.0-rc.0",
@@ -52,6 +55,7 @@
     "zod": "^3.23.8"
   },
   "devDependencies": {
+    "@types/jsdom": "^21.1.7",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
