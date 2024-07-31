@@ -6,6 +6,8 @@ import {
   PlayIcon,
   SkipBackIcon,
   SkipForward,
+  Volume2,
+  VolumeX,
 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
@@ -25,6 +27,8 @@ const VideoPlayer = ({ src }: VideoPlayerProps) => {
     null,
   );
   const [volume, setVolume] = useState<number>(1); // Volume range [0, 1]
+  const [muted, setMuted] = useState<boolean>(false);
+  const [playbackRate, setPlaybackRate] = useState<number>(1);
 
   const videoHandler = (control: "play" | "pause") => {
     if (videoRef.current) {
@@ -91,6 +95,23 @@ const VideoPlayer = ({ src }: VideoPlayerProps) => {
     if (videoRef.current) {
       videoRef.current.volume = newVolume;
       setVolume(newVolume);
+      setMuted(newVolume === 0);
+    }
+  };
+
+  const toggleMute = () => {
+    if (videoRef.current) {
+      const newMuted = !muted;
+      videoRef.current.muted = newMuted;
+      setMuted(newMuted);
+      setVolume(newMuted ? 0 : videoRef.current.volume);
+    }
+  };
+
+  const handlePlaybackRateChange = (rate: number) => {
+    if (videoRef.current) {
+      videoRef.current.playbackRate = rate;
+      setPlaybackRate(rate);
     }
   };
 
@@ -152,22 +173,23 @@ const VideoPlayer = ({ src }: VideoPlayerProps) => {
   return (
     <div
       className={`group relative h-full w-full ${fullscreen ? "fullscreen" : ""}`}
+      onMouseMove={() => setShowControls(true)}
     >
       <video
         ref={videoRef}
-        className="mx-auto size-fit max-h-[30rem] rounded-2xl"
+        className="mx-auto max-h-[80vh] rounded-lg shadow-lg"
         src={src}
         onClick={handleVideoClick}
       />
 
       {!fullscreen && !playing && !showControls && (
-        <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
+        <div className="absolute inset-0 flex items-center justify-center">
           <button
             onClick={(e) => {
               e.stopPropagation();
               videoHandler("play");
             }}
-            className="flex h-16 w-16 items-center justify-center rounded-full bg-primary"
+            className="flex h-16 w-16 items-center justify-center rounded-full bg-primary text-white"
           >
             <PlayIcon />
           </button>
@@ -175,51 +197,65 @@ const VideoPlayer = ({ src }: VideoPlayerProps) => {
       )}
 
       {(showControls || playing) && (
-        <div className="absolute bottom-0 left-0 w-full bg-black bg-opacity-70 p-4 transition-all duration-300 group-hover:bottom-0 group-hover:opacity-100 sm:p-6 sm:opacity-0">
+        <div className="absolute bottom-0 w-full bg-black bg-opacity-70 p-4 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
           <div className="mb-2 flex items-center justify-between">
             <button
               onClick={revert}
-              className="flex h-10 w-10 items-center justify-center rounded-full bg-primary"
+              className="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-white"
             >
-              <SkipBackIcon className="fill-white text-white" />
+              <SkipBackIcon />
             </button>
             {playing ? (
               <button
                 onClick={() => videoHandler("pause")}
-                className="flex h-10 w-10 items-center justify-center rounded-full bg-primary"
+                className="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-white"
               >
-                <PauseIcon className="fill-white text-white" />
+                <PauseIcon />
               </button>
             ) : (
               <button
                 onClick={() => videoHandler("play")}
-                className="flex h-10 w-10 items-center justify-center rounded-full bg-primary"
+                className="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-white"
               >
-                <PlayIcon className="fill-white text-white" />
+                <PlayIcon />
               </button>
             )}
             <button
               onClick={fastForward}
-              className="flex h-10 w-10 items-center justify-center rounded-full bg-primary"
+              className="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-white"
             >
-              <SkipForward className="fill-white text-white" />
+              <SkipForward />
             </button>
             <button
               onClick={toggleFullscreen}
-              className="flex h-10 w-10 items-center justify-center rounded-full bg-primary"
+              className="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-white"
             >
-              <Fullscreen className="fill-white text-white" />
+              <Fullscreen />
+            </button>
+            <button
+              onClick={toggleMute}
+              className="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-white"
+            >
+              {muted ? <VolumeX /> : <Volume2 />}
+            </button>
+            <button
+              onClick={() =>
+                handlePlaybackRateChange(playbackRate === 1 ? 1.5 : 1)
+              }
+              className="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-white"
+            >
+              {playbackRate}x
             </button>
           </div>
 
-          <div className="flex items-center justify-between">
+          <div className="mb-2 flex items-center justify-between">
             <p className="text-white">
               {Math.floor(currentTime / 60)}:
               {("0" + Math.floor(currentTime % 60)).slice(-2)}
             </p>
             <div
               onClick={handleProgressClick}
-              className="relative mx-4 h-1 w-3/4 cursor-pointer rounded-full bg-gray-600"
+              className="relative mx-4 h-2 w-3/4 cursor-pointer rounded-full bg-gray-600"
             >
               <div
                 style={{ width: `${progress}%` }}
@@ -231,15 +267,19 @@ const VideoPlayer = ({ src }: VideoPlayerProps) => {
               {("0" + Math.floor(videoTime % 60)).slice(-2)}
             </p>
           </div>
-          <input
-            type="range"
-            min="0"
-            max="1"
-            step="0.01"
-            value={volume}
-            onChange={handleVolumeChange}
-            className="mx-2 w-24 accent-primary"
-          />
+
+          <div className="flex items-center">
+            <input
+              type="range"
+              min="0"
+              max="1"
+              step="0.01"
+              value={volume}
+              onChange={handleVolumeChange}
+              className="w-24 accent-primary"
+            />
+            <p className="ml-2 text-white">{Math.round(volume * 100)}%</p>
+          </div>
         </div>
       )}
     </div>
