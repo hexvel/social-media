@@ -190,7 +190,7 @@ const VideoPlayer = ({ src }: VideoPlayerProps) => {
 
   return (
     <div
-      className={`relative h-full w-full ${fullscreen ? "fullscreen" : ""}`}
+      className={`group relative h-full w-full ${fullscreen ? "fullscreen" : ""}`}
       onMouseMove={() => setShowControls(true)}
     >
       <video
@@ -215,7 +215,7 @@ const VideoPlayer = ({ src }: VideoPlayerProps) => {
       )}
 
       {(showControls || playing) && (
-        <div className="absolute bottom-0 w-full bg-black bg-opacity-70 p-4 opacity-0 transition-opacity duration-300">
+        <div className="absolute bottom-0 w-full bg-black bg-opacity-70 p-4 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
           <div className="mb-2 flex items-center justify-between">
             <button
               onClick={revert}
@@ -251,7 +251,7 @@ const VideoPlayer = ({ src }: VideoPlayerProps) => {
               <Fullscreen className="size-4" />
             </button>
             <div
-              className="group relative flex items-center"
+              className="relative flex items-center"
               onMouseEnter={() => setShowVolumeControl(true)}
               onMouseLeave={() => setShowVolumeControl(false)}
             >
@@ -266,7 +266,7 @@ const VideoPlayer = ({ src }: VideoPlayerProps) => {
                 )}
               </button>
               {showVolumeControl && (
-                <div className="absolute bottom-[76px] left-1/2 mt-2 flex w-28 -translate-x-1/2 -rotate-90 transform justify-center rounded-lg bg-card p-2 group-hover:visible">
+                <div className="absolute bottom-[76px] left-1/2 mt-2 flex w-28 -translate-x-1/2 -rotate-90 transform justify-center rounded-lg bg-card p-2">
                   <input
                     type="range"
                     min="0"
