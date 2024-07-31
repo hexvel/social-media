@@ -170,6 +170,23 @@ const VideoPlayer = ({ src }: VideoPlayerProps) => {
     return () => document.removeEventListener("keydown", handleKeyDown);
   }, []);
 
+  useEffect(() => {
+    const handleDoubleClick = () => {
+      toggleFullscreen();
+    };
+
+    const videoElement = videoRef.current;
+    if (videoElement) {
+      videoElement.addEventListener("dblclick", handleDoubleClick);
+    }
+
+    return () => {
+      if (videoElement) {
+        videoElement.removeEventListener("dblclick", handleDoubleClick);
+      }
+    };
+  }, []);
+
   return (
     <div
       className={`group relative h-full w-full ${fullscreen ? "fullscreen" : ""}`}
