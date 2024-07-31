@@ -251,7 +251,7 @@ const VideoPlayer = ({ src }: VideoPlayerProps) => {
               <Fullscreen className="size-4" />
             </button>
             <div
-              className="relative flex items-center"
+              className="group relative flex items-center"
               onMouseEnter={() => setShowVolumeControl(true)}
               onMouseLeave={() => setShowVolumeControl(false)}
             >
@@ -266,7 +266,7 @@ const VideoPlayer = ({ src }: VideoPlayerProps) => {
                 )}
               </button>
               {showVolumeControl && (
-                <div className="absolute bottom-full left-1/2 mt-2 w-32 -translate-x-1/2 transform rounded-lg bg-gray-800 p-2">
+                <div className="absolute bottom-[76px] left-1/2 mt-2 flex w-28 -translate-x-1/2 -rotate-90 transform justify-center rounded-lg bg-card p-2 group-hover:visible">
                   <input
                     type="range"
                     min="0"
@@ -276,9 +276,6 @@ const VideoPlayer = ({ src }: VideoPlayerProps) => {
                     onChange={handleVolumeChange}
                     className="w-full accent-primary"
                   />
-                  <p className="mt-1 text-center text-white">
-                    {Math.round(volume * 100)}%
-                  </p>
                 </div>
               )}
             </div>
