@@ -15,6 +15,7 @@ import PostsMoreButton from "../posts-more-button";
 import { useSession } from "../providers/session-provider";
 import UserAvatar from "../user-avatar";
 import UserTooltip from "../user-tooltip";
+import VideoPlayer from "../video-player";
 import BookmarkButton from "./bookmark-button";
 import LikeButton from "./like-button";
 
@@ -151,13 +152,7 @@ function MediaPreview({ media, onClick }: MediaPreviewProps) {
   }
 
   if (media.type === "VIDEO") {
-    return (
-      <video
-        src={media.url}
-        controls
-        className="mx-auto size-fit max-h-[30rem] rounded-2xl"
-      />
-    );
+    return <VideoPlayer src={media.url} />;
   }
 
   return <p className="text-destructive">Unsupported attachment</p>;
