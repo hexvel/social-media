@@ -233,16 +233,6 @@ const VideoPlayer = ({ src }: VideoPlayerProps) => {
               <Fullscreen className="size-4" />
             </button>
             <button
-              onClick={toggleMute}
-              className="flex items-center justify-center rounded-full bg-primary p-2 text-white"
-            >
-              {muted ? (
-                <VolumeX className="size-4" />
-              ) : (
-                <Volume2 className="size-4" />
-              )}
-            </button>
-            <button
               onClick={() =>
                 handlePlaybackRateChange(playbackRate === 1 ? 1.5 : 1)
               }
@@ -272,7 +262,17 @@ const VideoPlayer = ({ src }: VideoPlayerProps) => {
             </p>
           </div>
 
-          <div className="flex items-center">
+          <div className="flex items-center gap-x-2">
+            <button
+              onClick={toggleMute}
+              className="flex items-center justify-center rounded-full bg-primary p-2 text-white"
+            >
+              {muted ? (
+                <VolumeX className="size-4" />
+              ) : (
+                <Volume2 className="size-4" />
+              )}
+            </button>
             <input
               type="range"
               min="0"
