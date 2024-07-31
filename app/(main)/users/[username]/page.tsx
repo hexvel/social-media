@@ -46,7 +46,7 @@ export async function generateMetadata({
   const user = await getUser(username, loggedInUser.id);
 
   return {
-    title: `@${user.displayName} (@${user.username})`,
+    title: `${user.displayName} (@${user.username})`,
     description: user.bio,
   };
 }
