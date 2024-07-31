@@ -16,7 +16,7 @@ const UsersCount = () => {
       {!usersCount ? (
         <Loader2 className="mx-auto my-3 animate-spin" />
       ) : (
-        <span className="font-semibold">
+        <span className="font-semibold text-muted-foreground">
           {formatNumber(usersCount!)} {usersCount === 1 ? "user" : "users"}
         </span>
       )}

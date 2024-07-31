@@ -8,7 +8,7 @@ import { LinkifyWithPreview } from "../linkify";
 import { Media } from "@prisma/client";
 import { MessageSquare } from "lucide-react";
 import Image from "next/image";
-import { useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import Comments from "../comments/comment-items";
 import FullScreenImage from "../full-screen-image";
 import PostsMoreButton from "../posts-more-button";
@@ -27,6 +27,24 @@ export default function Post({ post }: PostsProps) {
   const { user } = useSession();
   const [showComments, setShowComments] = useState(false);
   const [fullScreenImage, setFullScreenImage] = useState<string | null>(null);
+
+  const handleImageClick = useCallback((url: string) => {
+    setFullScreenImage(url);
+  }, []);
+
+  const toggleComments = useCallback(() => {
+    setShowComments((prev) => !prev);
+  }, []);
+
+  const isPostByCurrentUser = post.user.id === user.id;
+  const isLikedByUser = useMemo(
+    () => !!post.likes.some((like) => like.userId === user.id),
+    [post.likes, user.id],
+  );
+  const isBookmarkedByUser = useMemo(
+    () => post.bookmarks.some((bookmark) => bookmark.userId === user.id),
+    [post.bookmarks, user.id],
+  );
 
   return (
     <article className="group/post space-y-3 rounded-2xl bg-card p-5 shadow-sm">
@@ -55,7 +73,7 @@ export default function Post({ post }: PostsProps) {
             </Link>
           </div>
         </div>
-        {post.user.id === user.id && (
+        {isPostByCurrentUser && (
           <PostsMoreButton
             post={post}
             className="opacity-0 transition-opacity group-hover/post:opacity-100"
@@ -68,7 +86,7 @@ export default function Post({ post }: PostsProps) {
       {!!post.attachments.length && (
         <MediaPreviews
           attachments={post.attachments}
-          onImageClick={(url) => setFullScreenImage(url)}
+          onImageClick={handleImageClick}
         />
       )}
       <hr className="text-muted-foreground" />
@@ -78,22 +96,15 @@ export default function Post({ post }: PostsProps) {
             postId={post.id}
             initialState={{
               likes: post._count.likes,
-              isLikedByUser: !!post.likes.some(
-                (like) => like.userId === user.id,
-              ),
+              isLikedByUser,
             }}
           />
-          <CommentButton
-            post={post}
-            onClick={() => setShowComments(!showComments)}
-          />
+          <CommentButton post={post} onClick={toggleComments} />
         </div>
         <BookmarkButton
           postId={post.id}
           initialState={{
-            isBookmarkedByUser: post.bookmarks.some(
-              (bookmark) => bookmark.userId === user.id,
-            ),
+            isBookmarkedByUser,
           }}
         />
       </div>
@@ -113,7 +124,19 @@ interface MediaPreviewsProps {
   onImageClick: (url: string) => void;
 }
 
-function MediaPreviews({ attachments, onImageClick }: MediaPreviewsProps) {
+const MediaPreviews = ({ attachments, onImageClick }: MediaPreviewsProps) => {
+  const renderPreviews = useMemo(
+    () =>
+      attachments.map((attachment) => (
+        <MediaPreview
+          key={attachment.id}
+          media={attachment}
+          onClick={onImageClick}
+        />
+      )),
+    [attachments, onImageClick],
+  );
+
   return (
     <div
       className={cn(
@@ -121,23 +144,17 @@ function MediaPreviews({ attachments, onImageClick }: MediaPreviewsProps) {
         attachments.length > 1 && "sm:grid sm:grid-cols-2",
       )}
     >
-      {attachments.map((attachment) => (
-        <MediaPreview
-          key={attachment.id}
-          media={attachment}
-          onClick={onImageClick}
-        />
-      ))}
+      {renderPreviews}
     </div>
   );
-}
+};
 
 interface MediaPreviewProps {
   media: Media;
   onClick: (url: string) => void;
 }
 
-function MediaPreview({ media, onClick }: MediaPreviewProps) {
+const MediaPreview = ({ media, onClick }: MediaPreviewProps) => {
   if (media.type === "IMAGE") {
     return (
       <Image
@@ -156,21 +173,18 @@ function MediaPreview({ media, onClick }: MediaPreviewProps) {
   }
 
   return <p className="text-destructive">Unsupported attachment</p>;
-}
+};
 
 interface CommentButtonProps {
   post: PostData;
   onClick: () => void;
 }
 
-function CommentButton({ post, onClick }: CommentButtonProps) {
-  return (
-    <button onClick={onClick} className="flex items-center gap-2">
-      <MessageSquare className="size-5" />
-      <span className="text-sm font-medium tabular-nums">
-        {post._count.comments}{" "}
-        <span className="hidden sm:inline">comments</span>
-      </span>
-    </button>
-  );
-}
+const CommentButton = ({ post, onClick }: CommentButtonProps) => (
+  <button onClick={onClick} className="flex items-center gap-2">
+    <MessageSquare className="size-5" />
+    <span className="text-sm font-medium tabular-nums">
+      {post._count.comments} <span className="hidden sm:inline">comments</span>
+    </span>
+  </button>
+);

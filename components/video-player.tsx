@@ -190,7 +190,7 @@ const VideoPlayer = ({ src }: VideoPlayerProps) => {
 
   return (
     <div
-      className={`group relative h-full w-full ${fullscreen ? "fullscreen" : ""}`}
+      className={`relative h-full w-full ${fullscreen ? "fullscreen" : ""}`}
       onMouseMove={() => setShowControls(true)}
     >
       <video
@@ -215,7 +215,7 @@ const VideoPlayer = ({ src }: VideoPlayerProps) => {
       )}
 
       {(showControls || playing) && (
-        <div className="absolute bottom-0 w-full bg-black bg-opacity-70 p-4 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+        <div className="absolute bottom-0 w-full bg-black bg-opacity-70 p-4 opacity-0 transition-opacity duration-300">
           <div className="mb-2 flex items-center justify-between">
             <button
               onClick={revert}
