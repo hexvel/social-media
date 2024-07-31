@@ -29,6 +29,7 @@ const VideoPlayer = ({ src }: VideoPlayerProps) => {
   const [volume, setVolume] = useState<number>(1); // Volume range [0, 1]
   const [muted, setMuted] = useState<boolean>(false);
   const [playbackRate, setPlaybackRate] = useState<number>(1);
+  const [showVolumeControl, setShowVolumeControl] = useState<boolean>(false);
 
   const videoHandler = (control: "play" | "pause") => {
     if (videoRef.current) {
@@ -249,6 +250,38 @@ const VideoPlayer = ({ src }: VideoPlayerProps) => {
             >
               <Fullscreen className="size-4" />
             </button>
+            <div
+              className="relative flex items-center"
+              onMouseEnter={() => setShowVolumeControl(true)}
+              onMouseLeave={() => setShowVolumeControl(false)}
+            >
+              <button
+                onClick={toggleMute}
+                className="flex items-center justify-center rounded-full bg-primary p-2 text-white"
+              >
+                {muted ? (
+                  <VolumeX className="size-4" />
+                ) : (
+                  <Volume2 className="size-4" />
+                )}
+              </button>
+              {showVolumeControl && (
+                <div className="absolute bottom-full left-1/2 mt-2 w-32 -translate-x-1/2 transform rounded-lg bg-gray-800 p-2">
+                  <input
+                    type="range"
+                    min="0"
+                    max="1"
+                    step="0.01"
+                    value={volume}
+                    onChange={handleVolumeChange}
+                    className="w-full accent-primary"
+                  />
+                  <p className="mt-1 text-center text-white">
+                    {Math.round(volume * 100)}%
+                  </p>
+                </div>
+              )}
+            </div>
             <button
               onClick={() =>
                 handlePlaybackRateChange(playbackRate === 1 ? 1.5 : 1)
@@ -277,29 +310,6 @@ const VideoPlayer = ({ src }: VideoPlayerProps) => {
               {Math.floor(videoTime / 60)}:
               {("0" + Math.floor(videoTime % 60)).slice(-2)}
             </p>
-          </div>
-
-          <div className="flex items-center gap-x-2">
-            <button
-              onClick={toggleMute}
-              className="flex items-center justify-center rounded-full bg-primary p-2 text-white"
-            >
-              {muted ? (
-                <VolumeX className="size-4" />
-              ) : (
-                <Volume2 className="size-4" />
-              )}
-            </button>
-            <input
-              type="range"
-              min="0"
-              max="1"
-              step="0.01"
-              value={volume}
-              onChange={handleVolumeChange}
-              className="w-24 accent-primary"
-            />
-            <p className="ml-2 text-white">{Math.round(volume * 100)}%</p>
           </div>
         </div>
       )}
