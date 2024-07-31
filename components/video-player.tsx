@@ -191,7 +191,7 @@ const VideoPlayer = ({ src }: VideoPlayerProps) => {
             }}
             className="flex h-16 w-16 items-center justify-center rounded-full bg-primary text-white"
           >
-            <PlayIcon />
+            <PlayIcon className="size-4" />
           </button>
         </div>
       )}
@@ -201,48 +201,52 @@ const VideoPlayer = ({ src }: VideoPlayerProps) => {
           <div className="mb-2 flex items-center justify-between">
             <button
               onClick={revert}
-              className="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-white"
+              className="flex items-center justify-center rounded-full bg-primary p-2 text-white"
             >
-              <SkipBackIcon />
+              <SkipBackIcon className="size-4" />
             </button>
             {playing ? (
               <button
                 onClick={() => videoHandler("pause")}
-                className="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-white"
+                className="flex items-center justify-center rounded-full bg-primary p-2 text-white"
               >
-                <PauseIcon />
+                <PauseIcon className="size-4" />
               </button>
             ) : (
               <button
                 onClick={() => videoHandler("play")}
-                className="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-white"
+                className="flex items-center justify-center rounded-full bg-primary p-2 text-white"
               >
-                <PlayIcon />
+                <PlayIcon className="size-4" />
               </button>
             )}
             <button
               onClick={fastForward}
-              className="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-white"
+              className="flex items-center justify-center rounded-full bg-primary p-2 text-white"
             >
-              <SkipForward />
+              <SkipForward className="size-4" />
             </button>
             <button
               onClick={toggleFullscreen}
-              className="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-white"
+              className="flex items-center justify-center rounded-full bg-primary p-2 text-white"
             >
-              <Fullscreen />
+              <Fullscreen className="size-4" />
             </button>
             <button
               onClick={toggleMute}
-              className="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-white"
+              className="flex items-center justify-center rounded-full bg-primary p-2 text-white"
             >
-              {muted ? <VolumeX /> : <Volume2 />}
+              {muted ? (
+                <VolumeX className="size-4" />
+              ) : (
+                <Volume2 className="size-4" />
+              )}
             </button>
             <button
               onClick={() =>
                 handlePlaybackRateChange(playbackRate === 1 ? 1.5 : 1)
               }
-              className="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-white"
+              className="flex items-center justify-center rounded-full p-2 text-white"
             >
               {playbackRate}x
             </button>
