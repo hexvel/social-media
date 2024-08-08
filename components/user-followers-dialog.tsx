@@ -8,7 +8,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { useUserFollowers } from "@/hooks/use-user-followers";
-import { FollowerInfo } from "@/lib/types";
+import { FollowerInfo, UserData } from "@/lib/types";
 import { formatNumber } from "@/lib/utils";
 import Link from "next/link";
 import FollowButton from "./follow-button";
@@ -47,7 +47,7 @@ export default function UserFollowersDialog({
               key={user.follower.id}
               className="gap-3- flex items-center justify-between"
             >
-              <UserTooltip user={user}>
+              <UserTooltip user={user.follower as UserData}>
                 <Link
                   href={`/users/${user.follower.username}`}
                   className="flex items-center gap-3"
