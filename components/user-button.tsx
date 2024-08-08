@@ -1,12 +1,13 @@
 "use client";
 
-import { logout } from "@/app/(auth)/actions";
-import { cn } from "@/lib/utils";
-import { useQueryClient } from "@tanstack/react-query";
-import { Check, LogOutIcon, Monitor, Moon, Sun, UserIcon } from "lucide-react";
-import { useTheme } from "next-themes";
-import Link from "next/link";
-import { useSession } from "./providers/session-provider";
+import { logout } from "@/app/(auth)/actions"
+import { cn } from "@/lib/utils"
+import { useQueryClient } from "@tanstack/react-query"
+import { Check, LogOutIcon, Monitor, Moon, Sun, UserIcon } from "lucide-react"
+import { useTheme } from "next-themes"
+import Link from "next/link"
+import { useState } from "react"
+import { useSession } from "./providers/session-provider"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -18,8 +19,8 @@ import {
   DropdownMenuSubContent,
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
-} from "./ui/dropdown-menu";
-import UserAvatar from "./user-avatar";
+} from "./ui/dropdown-menu"
+import UserAvatar from "./user-avatar"
 
 interface UserButtonProps {
   className?: string;
@@ -28,12 +29,13 @@ interface UserButtonProps {
 const UserButton = ({ className }: UserButtonProps) => {
   const { user } = useSession();
   const { theme, setTheme } = useTheme();
+  const [isOpen, setIsOpen] = useState(false);
 
   const queryClient = useQueryClient();
 
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
+    <DropdownMenu open={isOpen}>
+      <DropdownMenuTrigger asChild onClick={() => setIsOpen(!isOpen)}>
         <button className={cn("flex-none rounded-full", className)}>
           <UserAvatar avatarUrl={user.avatarUrl} />
         </button>
@@ -42,7 +44,10 @@ const UserButton = ({ className }: UserButtonProps) => {
         <DropdownMenu>
           <DropdownMenuLabel>Logged in as @{user.username}</DropdownMenuLabel>
           <DropdownMenuSeparator />
-          <Link href={`/users/${user.username}`}>
+          <Link
+            href={`/users/${user.username}`}
+            onClick={() => setIsOpen(false)}
+          >
             <DropdownMenuItem>
               <UserIcon className="mr-2 size-4" />
               Profile
