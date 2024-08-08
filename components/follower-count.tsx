@@ -2,7 +2,7 @@
 
 import useFollowerInfo from "@/hooks/use-followers-info";
 import { FollowerInfo } from "@/lib/types";
-import { formatNumber } from "@/lib/utils";
+import UserFollowersDialog from "./user-followers-dialog";
 
 interface FollowerCountProps {
   userId: string;
@@ -12,12 +12,7 @@ interface FollowerCountProps {
 const FollowerCount = ({ userId, initialState }: FollowerCountProps) => {
   const { data } = useFollowerInfo(userId, initialState);
 
-  return (
-    <span>
-      Followers:{" "}
-      <span className="font-semibold">{formatNumber(data.followers)}</span>
-    </span>
-  );
+  return <UserFollowersDialog userId={userId} data={data} />;
 };
 
 export default FollowerCount;

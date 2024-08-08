@@ -64,6 +64,16 @@ export type PostData = Prisma.PostGetPayload<{
   include: ReturnType<typeof getPostDataInclude>;
 }>;
 
+export interface UserDataWithFollowInfo extends UserData {
+  follower: {
+    id: string;
+    username: string;
+    displayName: string;
+    avatarUrl: string;
+    bio: string | null;
+  };
+}
+
 export interface PostsPage {
   posts: PostData[];
   nextCursor: string | null;
@@ -108,6 +118,14 @@ export type NotificationData = Prisma.NotificationGetPayload<{
 export interface NotificationsPage {
   notifications: NotificationData[];
   nextCursor: string | null;
+}
+
+export interface UserFollower {
+  id: string;
+  username: string;
+  displayName: string;
+  avatarUrl: string;
+  bio: string;
 }
 
 export interface FollowerInfo {

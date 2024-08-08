@@ -100,10 +100,11 @@ async function UserInfoSidebar({ user }: UserInfoSidebarProps) {
         <FollowButton
           userId={user.id}
           initialState={{
-            followers: user._count.followers,
-            isFollowedByUser: user.followers.some(
-              ({ followerId }) => followerId === loggedInUser.id,
-            ),
+            followers: user._count?.followers ?? 0,
+            isFollowedByUser:
+              user.followers?.some(
+                ({ followerId }) => followerId === user.id,
+              ) ?? false,
           }}
         />
       )}
