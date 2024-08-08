@@ -34,8 +34,8 @@ const UserButton = ({ className }: UserButtonProps) => {
   const queryClient = useQueryClient();
 
   return (
-    <DropdownMenu open={isOpen}>
-      <DropdownMenuTrigger asChild onClick={() => setIsOpen(!isOpen)}>
+    <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
+      <DropdownMenuTrigger asChild>
         <button className={cn("flex-none rounded-full", className)}>
           <UserAvatar avatarUrl={user.avatarUrl} />
         </button>
