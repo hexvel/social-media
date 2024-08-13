@@ -1,8 +1,8 @@
 import { validateRequest } from "@/auth";
 import prisma from "@/lib/prisma";
 import { getUserDataSelect } from "@/lib/types";
+import { VerifiedIcon } from "lucide-react";
 import Link from "next/link";
-import FollowButton from "./follow-button";
 import UserAvatar from "./user-avatar";
 import UserTooltip from "./user-tooltip";
 
@@ -38,8 +38,11 @@ export default async function FollowUsers() {
             >
               <UserAvatar avatarUrl={user.avatarUrl} className="flex-none" />
               <div>
-                <p className="line-clamp-1 break-all font-semibold hover:underline">
+                <p className="line-clamp-1 flex items-center gap-x-2 break-all font-semibold hover:underline">
                   {user.displayName}
+                  {user.verified && (
+                    <VerifiedIcon className="size-5 fill-sky-600" />
+                  )}
                 </p>
                 <p className="line-clamp-1 break-all text-muted-foreground">
                   @{user.username}
@@ -47,17 +50,6 @@ export default async function FollowUsers() {
               </div>
             </Link>
           </UserTooltip>
-
-          <FollowButton
-            userId={user.id}
-            initialState={{
-              followers: user._count?.followers ?? 0,
-              isFollowedByUser:
-                user.followers?.some(
-                  ({ followerId }) => followerId === user.id,
-                ) ?? false,
-            }}
-          />
         </div>
       ))}
     </div>

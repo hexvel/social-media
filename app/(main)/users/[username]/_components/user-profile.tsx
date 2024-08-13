@@ -5,6 +5,7 @@ import UserAvatar from "@/components/user-avatar";
 import { FollowerInfo, UserData } from "@/lib/types";
 import { formatNumber } from "@/lib/utils";
 import { formatDate } from "date-fns";
+import { VerifiedIcon } from "lucide-react";
 import EditProfileButton from "./edit-profile-button";
 
 interface UserProfileProps {
@@ -33,7 +34,10 @@ export default async function UserProfile({
       <div className="flex flex-wrap gap-3 sm:flex-nowrap">
         <div className="mx-auto space-y-3">
           <div>
-            <h1 className="text-3xl font-bold">{user.displayName}</h1>
+            <h1 className="flex items-center gap-x-2 text-3xl font-bold">
+              {user.displayName}{" "}
+              {user.verified && <VerifiedIcon className="fill-sky-600" />}
+            </h1>
             <div className="text-muted-foreground">@{user.username}</div>
           </div>
           <div>Member since {formatDate(user.createdAt, "MMM d, yyyy")}</div>

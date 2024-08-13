@@ -6,7 +6,7 @@ import Link from "next/link";
 import { LinkifyWithPreview } from "../linkify";
 
 import { Media } from "@prisma/client";
-import { MessageSquare } from "lucide-react";
+import { MessageSquare, VerifiedIcon } from "lucide-react";
 import Image from "next/image";
 import { useCallback, useMemo, useState } from "react";
 import Comments from "../comments/comment-items";
@@ -59,9 +59,14 @@ export default function Post({ post }: PostsProps) {
             <UserTooltip user={post.user}>
               <Link
                 href={`/users/${post.user.username}`}
-                className="block font-medium hover:underline"
+                className="flex items-center gap-x-2 font-medium hover:underline"
               >
                 {post.user.displayName}
+                <span>
+                  {post.user.verified && (
+                    <VerifiedIcon className="size-5 fill-sky-600" />
+                  )}
+                </span>
               </Link>
             </UserTooltip>
             <Link

@@ -6,7 +6,7 @@ import UserAvatar from "@/components/user-avatar";
 import UserTooltip from "@/components/user-tooltip";
 import prisma from "@/lib/prisma";
 import { getPostDataInclude, UserData } from "@/lib/types";
-import { Loader2 } from "lucide-react";
+import { Loader2, VerifiedIcon } from "lucide-react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { cache, Suspense } from "react";
@@ -82,8 +82,11 @@ async function UserInfoSidebar({ user }: UserInfoSidebarProps) {
         >
           <UserAvatar avatarUrl={user.avatarUrl} className="flex-none" />
           <div>
-            <p className="line-clamp-1 break-all font-semibold hover:underline">
+            <p className="line-clamp-1 flex items-center gap-x-2 break-all font-semibold hover:underline">
               {user.displayName}
+              {user.verified && (
+                <VerifiedIcon className="size-5 fill-sky-600" />
+              )}
             </p>
             <p className="line-clamp-1 break-all text-sm text-muted-foreground">
               @{user.username}
