@@ -1,6 +1,12 @@
 import FollowButton from "@/components/follow-button";
 import FollowerCount from "@/components/follower-count";
 import Linkify from "@/components/linkify";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import UserAvatar from "@/components/user-avatar";
 import { FollowerInfo, UserData } from "@/lib/types";
 import { formatNumber } from "@/lib/utils";
@@ -36,7 +42,18 @@ export default async function UserProfile({
           <div>
             <h1 className="flex items-center gap-x-2 text-3xl font-bold">
               {user.displayName}{" "}
-              {user.verified && <VerifiedIcon className="fill-sky-600" />}
+              <TooltipProvider delayDuration={100}>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    {user.verified && (
+                      <VerifiedIcon className="cursor-pointer fill-sky-600" />
+                    )}
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>Verified</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
             </h1>
             <div className="text-muted-foreground">@{user.username}</div>
           </div>
