@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-@import "~stream-chat-react/dist/css/v2/index.css";
+@use "~stream-chat-react/dist/css/v2/index.css" as mat;
 
 @layer base {
   :root {

@@ -1,9 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { ReactNode, useCallback } from "react";
+import { ReactNode } from "react";
 import { LinkIt, LinkItUrl } from "react-linkify-it";
-import LinkPreview from "./link-preview";
 import UserLinkWithTooltip from "./user-link-with-tooltip";
 
 interface LinkifyProps {
@@ -21,15 +20,10 @@ export default function Linkify({ children }: LinkifyProps) {
 }
 
 export function LinkifyWithPreview({ children }: LinkifyProps) {
-  const renderLinkPreview = useCallback(
-    () => <LinkPreview>{children}</LinkPreview>,
-    [children],
-  );
-
   return (
     <LinkifyUsername>
       <LinkifyHashtag>
-        <LinkifyUrl>{renderLinkPreview()}</LinkifyUrl>
+        <LinkifyUrl>{children}</LinkifyUrl>
       </LinkifyHashtag>
     </LinkifyUsername>
   );
