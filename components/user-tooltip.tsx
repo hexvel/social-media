@@ -4,7 +4,6 @@ import { FollowerInfo, UserData } from "@/lib/types";
 import Link from "next/link";
 import { PropsWithChildren } from "react";
 import FollowButton from "./follow-button";
-import FollowerCount from "./follower-count";
 import Linkify from "./linkify";
 import { useSession } from "./providers/session-provider";
 import {
@@ -57,7 +56,6 @@ export default function UserTooltip({ user, children }: UserTooltipProps) {
                 </div>
               </Linkify>
             )}
-            <FollowerCount userId={user.id} initialState={followersState} />
           </div>
         </TooltipContent>
       </Tooltip>

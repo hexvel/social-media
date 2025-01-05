@@ -29,6 +29,11 @@ export default function Notification({ notification }: NotificationProps) {
       icon: <Heart className="size-7 fill-red-500 text-red-500" />,
       href: `/posts/${notification.postId}`,
     },
+    MENTION: {
+      message: `mentioned you in a post`,
+      icon: <MessageCircle className="size-7 fill-primary text-primary" />,
+      href: `/posts/${notification.postId}`,
+    },
   };
 
   const { message, icon, href } = notificationTypeMap[notification.type];

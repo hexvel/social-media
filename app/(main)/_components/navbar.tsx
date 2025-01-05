@@ -1,6 +1,5 @@
 import SearchField from "@/components/search-field";
 import UserButton from "@/components/user-button";
-import UsersCount from "@/components/users-count";
 import Link from "next/link";
 
 const Navbar = () => {
@@ -12,7 +11,6 @@ const Navbar = () => {
         </Link>
         <SearchField />
         <UserButton className="sm:ms-auto" />
-        <UsersCount />
       </div>
     </header>
   );
