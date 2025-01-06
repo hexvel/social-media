@@ -11,7 +11,7 @@ const MenuBar = ({ className }: MenuBarProps) => {
     <div className={className}>
       <Button
         variant="ghost"
-        className="flex items-center justify-start gap-3 transition duration-200 hover:-translate-y-1 hover:translate-x-1"
+        className="flex items-center justify-start gap-3 transition duration-200"
         title="Home"
         asChild
       >
@@ -22,7 +22,7 @@ const MenuBar = ({ className }: MenuBarProps) => {
       </Button>
       <Button
         variant="ghost"
-        className="flex items-center justify-start gap-3 transition duration-200 hover:-translate-y-1 hover:translate-x-1"
+        className="flex items-center justify-start gap-3 transition duration-200"
         title="Notifications"
         asChild
       >
@@ -33,7 +33,7 @@ const MenuBar = ({ className }: MenuBarProps) => {
       </Button>
       <Button
         variant="ghost"
-        className="flex items-center justify-start gap-3 transition duration-200 hover:-translate-y-1 hover:translate-x-1"
+        className="flex items-center justify-start gap-3 transition duration-200"
         title="Messages"
         asChild
       >
@@ -44,7 +44,7 @@ const MenuBar = ({ className }: MenuBarProps) => {
       </Button>
       <Button
         variant="ghost"
-        className="flex items-center justify-start gap-3 transition duration-200 hover:-translate-y-1 hover:translate-x-1"
+        className="flex items-center justify-start gap-3 transition duration-200"
         title="Bookmarks"
         asChild
       >
