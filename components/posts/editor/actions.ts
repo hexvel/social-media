@@ -19,15 +19,19 @@ export async function submitPost(input: {
     (match) => match[1],
   );
 
-  const mentionedUserIds =
+  const mentionedUsers =
     mentionedUsernames.length > 0
-      ? await prisma.user
-          .findMany({
-            where: { username: { in: mentionedUsernames } },
-            select: { id: true },
-          })
-          .then((users) => users.map((user) => user.id))
+      ? await prisma.user.findMany({
+          where: { username: { in: mentionedUsernames } },
+          select: { id: true },
+        })
       : [];
+
+  const mentionedUserIds = mentionedUsers
+    .map((recordUser) => recordUser.id)
+    .filter((mentioned) => mentioned !== user.id);
+
+  console.log(mentionedUserIds);
 
   const newPost = await prisma.$transaction(async (prisma) => {
     const post = await prisma.post.create({
@@ -39,18 +43,17 @@ export async function submitPost(input: {
       include: getPostDataInclude(user.id),
     });
 
-    const notifications = mentionedUserIds.map((recipientId) =>
-      prisma.notification.create({
-        data: {
+    if (mentionedUserIds.length > 0) {
+      await prisma.notification.createMany({
+        data: mentionedUserIds.map((recipientId) => ({
           issuerId: user.id,
           recipientId,
           postId: post.id,
           type: "MENTION",
-        },
-      }),
-    );
+        })),
+      });
+    }
 
-    await Promise.all(notifications);
     return post;
   });
 
