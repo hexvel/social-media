@@ -25,7 +25,7 @@ export function useDeletePostMutation() {
       await queryClient.cancelQueries(queryFilter);
 
       queryClient.setQueriesData<InfiniteData<PostsPage, string | null>>(
-        queryFilter,
+        queryFilter as any,
         (oldData) => {
           if (!oldData) return;
 
