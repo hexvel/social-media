@@ -10,6 +10,11 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: "https",
+        hostname: `${process.env.NEXT_PULIC_UPLOADTHING_APP_ID}.ufs.sh`,
+        pathname: `/a/${process.env.NEXT_PULIC_UPLOADTHING_APP_ID}/*`,
+      },
+      {
+        protocol: "https",
         hostname: "utfs.io",
         pathname: `/a/${process.env.NEXT_PULIC_UPLOADTHING_APP_ID}/*`,
       },

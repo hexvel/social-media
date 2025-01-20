@@ -27,7 +27,7 @@
     "@tiptap/pm": "^2.11.0",
     "@tiptap/react": "^2.11.0",
     "@tiptap/starter-kit": "^2.11.0",
-    "@uploadthing/react": "^6.8.0",
+    "@uploadthing/react": "^7.1.5",
     "arctic": "^1.9.2",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",

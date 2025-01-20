@@ -26,8 +26,6 @@ export default function UserFollowersDialog({
 
   if (!usersToFollow) return null;
 
-  console.log(usersToFollow);
-
   return (
     <Dialog>
       <DialogTrigger asChild>

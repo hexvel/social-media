@@ -60,6 +60,9 @@ export const fileRouter = {
         userId: user.id,
       };
     })
+    .onUploadError(async ({ error }) => {
+      console.log(error.message);
+    })
     .onUploadComplete(async ({ file }) => {
       const media = await prisma.media.create({
         data: {
